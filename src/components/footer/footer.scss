@@ -1,0 +1,25 @@
+footer {
+    padding: 10px;
+    background-color: #b30000;
+
+    >div {
+        display: flex;
+        border-radius: 20px;
+        overflow: hidden;
+
+        input {
+            border: 0;
+            padding: 0 10px;
+            height: 30px;
+            font-size: 13px;
+        }
+
+        button {
+            padding-right: 10px;
+            background-color: #fff;
+            img {
+                width: 15px;
+            }
+        }
+    }
+}
