@@ -1,0 +1,26 @@
+.card {
+    background-color: orange;
+    h3 {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .text-right {
+        text-align: right;
+        font-size: 12px;
+    }
+
+    img {
+        max-width: 80%;
+    }
+
+    figure {
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            height: 80%;
+        }
+    }
+}

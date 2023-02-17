@@ -15,8 +15,9 @@ function MenuComponent(props){
     let content = null;
 
     if(result.data){
-        content = result.data.results.map((item) => 
-            <a href="#">{item.name}</a>
+        //console.log(result.data);
+        content = result.data.results.map((item, key) => 
+            <a href="#" rel={item.url} key={key}>{item.name}</a>
         )
     }
 

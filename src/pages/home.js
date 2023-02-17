@@ -2,57 +2,64 @@ import './home.scss';
 import HeaderComponent from '../components/header/header';
 import MenuComponent from '../components/menu/menu';
 import FooterComponent from '../components/footer/footer';
-import CardListaComponent from '../components/cardLista/cardLista';
-import React from 'react';
+import CardListaComponent from '../components/cardLista/';
+import React, { useEffect, useState } from "react";
+import { useAxiosGet } from "../Hooks/HttpRequests";
+import axios from 'axios';
 
-class Home extends React.Component {
-    state = {
-        'menu' : "inactive"
-    };
+function Home() {
     
-    handleMenu = (childData) =>{
-        this.setState({menu: childData})
+    let content = null;
+    const [menu, setMenu] = useState('inactive');
+
+    function handleMenu (childData){
+        setMenu(childData);
     }
 
-    render(){
+    const [pokemons, setPokemons] = useState();
+    
+    useEffect(() => {
+        getPokemons();
+    }, []);
 
-        const {menu} = this.state;
-        
-        return (
-            <div>
-                <div className="container">
-                    <div className="row">
-                        <div className='col-12 col-md-5 mx-auto'>
-                            <div className='pokedexContainer'>
-                                <HeaderComponent parentCallback = {this.handleMenu}/>
-                                <MenuComponent parentCallback = {this.handleMenu} menuState={menu}/>
-                                <div className='content'>
-                                    <div>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                        <CardListaComponent/>
-                                    </div>
+    const getPokemons = () => {
+        const url = `https://pokeapi.co/api/v2/pokemon/?limit=20`;
+        axios.get(url)
+            .then(response => {
+                setPokemons(response)
+            })
+            .catch(() => {
+                
+            })
+    }
+
+    if(typeof pokemons != 'undefined' && pokemons.data.results){
+        content = pokemons.data.results.map((item, key) => 
+            <CardListaComponent pokemon={item} key={key} />
+        );
+    }
+
+    return (
+        <div>
+            <div className="container">
+                <div className="row">
+                    <div className='col-12 mx-auto'>
+                        <div className='pokedexContainer'>
+                            <HeaderComponent parentCallback = {handleMenu}/>
+                            <MenuComponent parentCallback = {handleMenu} menuState={menu}/>
+                            <div className='content'>
+                                <div>
+                                    {content}
                                 </div>
-                                <FooterComponent/>
                             </div>
+                            <FooterComponent/>
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
 
 export default Home;
