@@ -6,8 +6,12 @@ import { useAxiosGet } from "../../Hooks/HttpRequests";
 function MenuComponent(props){
 
     
-    function onTrigger(event){
-        props.parentCallback('');
+    function onTrigger(){
+        props.parentCallback();
+    }
+
+    function searchCallback(url) {
+        props.searchCallback(url);
     }
 
     const url = `https://pokeapi.co/api/v2/type/`;
@@ -17,7 +21,7 @@ function MenuComponent(props){
     if(result.data){
         //console.log(result.data);
         content = result.data.results.map((item, key) => 
-            <a href="#" rel={item.url} key={key}>{item.name}</a>
+            <a href="#" onClick={() => searchCallback(item.url)} rel={item.url} key={key}>{item.name}</a>
         )
     }
 
@@ -25,7 +29,7 @@ function MenuComponent(props){
         <div className={"menu "+props.menuState}>
             <div className='menuContent'>
                 <div className='actions p-2'>
-                    <button onClick={onTrigger}><img src={close} className="mr-2" /> fechar </button>
+                    <button onClick={() => onTrigger()}><img src={close} className="mr-2" /> fechar </button>
                 </div>
                 <div className='menuContentContainer'>
                     <div>

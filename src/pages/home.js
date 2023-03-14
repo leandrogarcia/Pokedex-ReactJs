@@ -16,6 +16,26 @@ function Home() {
         setMenu(childData);
     }
 
+    function searchCallback(url){
+        axios.get(url)
+            .then(response => {
+                const pokemons = {
+                    results : Array()
+                };
+
+                response.data.pokemon.forEach((item) => {
+                    pokemons.results.push(item.pokemon);
+                });
+
+                setPokemons(pokemons);
+
+                setMenu('inactive')
+            })
+            .catch(() => {
+                
+            })
+    }
+
     const [pokemons, setPokemons] = useState();
     
     useEffect(() => {
@@ -26,15 +46,15 @@ function Home() {
         const url = `https://pokeapi.co/api/v2/pokemon/?limit=20`;
         axios.get(url)
             .then(response => {
-                setPokemons(response)
+                setPokemons(response.data)
             })
             .catch(() => {
                 
             })
     }
 
-    if(typeof pokemons != 'undefined' && pokemons.data.results){
-        content = pokemons.data.results.map((item, key) => 
+    if(typeof pokemons != 'undefined' && pokemons.results){
+        content = pokemons.results.map((item, key) => 
             <CardListaComponent pokemon={item} key={key} />
         );
     }
@@ -46,7 +66,7 @@ function Home() {
                     <div className='col-12 mx-auto'>
                         <div className='pokedexContainer'>
                             <HeaderComponent parentCallback = {handleMenu}/>
-                            <MenuComponent parentCallback = {handleMenu} menuState={menu}/>
+                            <MenuComponent parentCallback = {handleMenu} menuState={menu} searchCallback={searchCallback}/>
                             <div className='content'>
                                 <div>
                                     {content}
