@@ -1,7 +1,7 @@
 import './index.scss';
 import { useAxiosGet } from "../../Hooks/HttpRequests";
 
-export default function CardListaComponent(props){
+export default function  CardListaComponent(props){
     const url = props.pokemon.url;
 
     let pokemon = useAxiosGet(url);
@@ -12,7 +12,7 @@ export default function CardListaComponent(props){
                 <div className="p-2">
                     <h3 className="text-center mb-2">{props.pokemon.name}</h3>
                     <figure className="text-center mb-2">
-                        <img src={pokemon.data.sprites.other.dream_world.front_default} />
+                        <img src={pokemon.data.sprites.other.dream_world.front_default || pokemon.data.sprites.front_default } />
                     </figure>
                     <div className='text-right'>#{pokemon.data.id}</div>
                 </div>

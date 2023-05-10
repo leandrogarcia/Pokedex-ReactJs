@@ -1,10 +1,13 @@
 import './menu.scss';
 import close from '../../images/xmark-solid.svg';
-import React from 'react';
-import { useAxiosGet } from "../../Hooks/HttpRequests";
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
 function MenuComponent(props){
 
+    const [filter, setFilter] = useState(``);
+    const [menuItems, setMenuItems] = useState([]);
+    const [loadedItems, setLoadedItems] = useState([]);
     
     function onTrigger(){
         props.parentCallback();
@@ -14,17 +17,25 @@ function MenuComponent(props){
         props.searchCallback(url);
     }
 
-    const url = `https://pokeapi.co/api/v2/type/`;
-    let result = useAxiosGet(url);
-    let content = null;
-
-    if(result.data){
-        //console.log(result.data);
-        content = result.data.results.map((item, key) => 
-            <a href="#" onClick={() => searchCallback(item.url)} rel={item.url} key={key}>{item.name}</a>
-        )
+    function doFilter(e) {
+        const typedValue = e.target.value;
+        setFilter(typedValue);
+        const items = loadedItems.filter(item => item.name.indexOf(typedValue) > -1)
+        setMenuItems(items);
     }
 
+    
+
+    useEffect(() => {
+        const url = `https://pokeapi.co/api/v2/type/`;
+        axios(url)
+            .then((result) => {
+                setMenuItems(result.data.results);
+                setLoadedItems(result.data.results);
+                //console.log(result.data.results)
+            })
+
+    }, []);
     return (
         <div className={"menu "+props.menuState}>
             <div className='menuContent'>
@@ -33,9 +44,13 @@ function MenuComponent(props){
                 </div>
                 <div className='menuContentContainer'>
                     <div>
-                        <h2>Filtrar por tipo</h2>
+                        <input 
+                            placeholder='Filtrar por tipo'
+                            value={filter}
+                            onChange={(e) => doFilter(e)}
+                        />
                         <nav>
-                            {content}
+                            {menuItems.map((item,key) => <a href="#" onClick={() => searchCallback(item.url)} rel={item.url} key={key}>{item.name}</a>)}
                         </nav>
                     </div>
                 </div>

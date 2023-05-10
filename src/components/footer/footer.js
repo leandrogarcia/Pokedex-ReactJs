@@ -5,10 +5,7 @@ export default function FooterComponent(){
     return (
         <footer>
             <div>
-                <input type="search" className="w-100" placeholder="Buscar"/>
-                <button>
-                    <img src={lupa} />
-                </button>
+                Pokedex
             </div>
         </footer>
     );

@@ -14,7 +14,7 @@
         margin: 0 ;
         overflow-y: scroll;
 
-        >div {
+        >div:not(.hasLoad) {
             padding: 20px;
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -25,4 +25,18 @@
 button {
     background-color: transparent;
     border: 0;
+
+    &.loadMore {
+        text-align: center;
+        background-color: #ccc;
+        margin: 0 auto;
+        display: block;
+        padding: 5px 15px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+}
+
+.hasLoad {
+    padding-bottom: 30px;
 }
